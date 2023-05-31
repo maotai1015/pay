@@ -56,5 +56,4 @@ configs = {
     'local': LocalConfig(),
     'pro': ProConfig(),
 }
-
-config = configs.get(ENV, 'local')
+config = configs.get(ENV or 'local')

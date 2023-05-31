@@ -1,14 +1,12 @@
-from flask import Response
+from flask import Blueprint
+from flask_restful import Api
 
-from apis import index
-from app import app
+from apis.api import GetAll
 
-
+api_bp = Blueprint('api', __name__, url_prefix='/api')
+api_restful = Api(api_bp)
 # 健康检查
-app.add_url_rule(
-    '/hs', view_func=lambda: Response('OK', mimetype='text/plain')
-)
 
-# 首页
-app.add_url_rule("/index", view_func=index, methods="GET")
+api_restful.add_resource(GetAll, '/all')
+
 
