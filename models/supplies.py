@@ -1,5 +1,6 @@
-from app import db
 import sqlalchemy as sa
+# 资源记录
+from app.app import db
 
 
 class Supplies(db.Model):
@@ -13,7 +14,13 @@ class Supplies(db.Model):
     __tablename__ = "asset_supplies"
 
 
-def get_all():
-    pass
+# 借用记录
+class Record(db.Model):
+    id = db.Column(sa.Integer, primary_key=True)
+    sup_id = db.Column(sa.String(64), comment="姓名")
+    user_id = db.Column(sa.String(64), comment="手机号")
+    is_back = db.Column(sa.Integer, comment="是否归还")
+
+    __tablename__ = "record"
 
 

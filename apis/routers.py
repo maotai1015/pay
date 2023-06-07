@@ -1,12 +1,8 @@
-from flask import Blueprint
-from flask_restful import Api
+from apis.api import GetSupplies, UserRegistration, Login
+from app.app import api_restful
 
-from apis.api import GetAll
-
-api_bp = Blueprint('api', __name__, url_prefix='/api')
-api_restful = Api(api_bp)
-# 健康检查
-
-api_restful.add_resource(GetAll, '/all')
+api_restful.add_resource(GetSupplies, '/all')
+api_restful.add_resource(UserRegistration, '/register')
+api_restful.add_resource(Login, '/login')
 
 

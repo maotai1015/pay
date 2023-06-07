@@ -25,9 +25,9 @@ class BaseConfig:
 # 本地测试
 class LocalConfig(BaseConfig):
     user = 'root'
-    password = '123456'
-    database = 'pay_db'
-    address = "127.0.0.1"
+    password = '20220620'
+    database = 'tong'
+    address = "124.221.75.228"
     port = 3306
     DB_CREATEALL = True
 
@@ -36,10 +36,10 @@ class LocalConfig(BaseConfig):
 class ProConfig(BaseConfig):
     """配置参数"""
     # 设置连接数据库的URL
-    user = ''
-    password = ''
-    database = 'pay'
-    address = ""
+    user = 'root'
+    password = '20220620'
+    database = 'tong'
+    address = "124.221.75.228"
     port = 3306
 
     # 设置sqlalchemy自动更跟踪数据库
