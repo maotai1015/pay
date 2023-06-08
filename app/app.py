@@ -21,6 +21,6 @@ db.init_app(app)
 
 app.add_url_rule('/hs', view_func=lambda: "ok")
 
-import models
+from models import *
 with app.app_context():
     db.create_all()
