@@ -7,7 +7,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 
 class User(db.Model):
     id = db.Column(sa.Integer, primary_key=True)
-    username = db.Column(sa.String(64), comment="用户名")
+    username = db.Column(sa.String(64), comment="用户名", unique=True)
     phone = db.Column(sa.String(64), comment="手机号")
     password = db.Column(sa.String(256), comment="密码")
 
