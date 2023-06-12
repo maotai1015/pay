@@ -1,3 +1,3 @@
 # 运行命令
-# pip install requirements
+# pip install -r requirements
 # flask run --reload
