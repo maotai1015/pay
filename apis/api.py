@@ -211,8 +211,7 @@ class DownLoad(Resource):
             io = StringIO()  # 在 io 中写 csv
             w = csv.writer(io)
             for i in res:  # 对于 data 中的每一条
-                w.writerow(i)  # 传入的是一个数组 ['xxx','xxx@xxx.xxx'] csv.writer 会把它处理成逗号分隔的一行
-                # 需要注意的是传入仅一个字符串 '' 时，会被逐字符分割，所以要写成 ['xxx'] 的形式
+                w.writerow(i)
                 yield io.getvalue()  # 返回写入的值
                 io.seek(0)  # io流的指针回到起点
                 io.truncate(0)  # 删去指针之后的部分，即清空所有写入的内容，准备下一行的写入
