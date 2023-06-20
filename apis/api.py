@@ -1,7 +1,13 @@
+import csv
+import json
+from io import StringIO
+
 from flask_restful import Resource, fields, marshal_with, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from models.supplies import Supplies, Record
 from models.user import User
+from flask import Response
+from flask import stream_with_context
 
 class SuppliesOpt(Resource):
     resource_fields = {
@@ -14,7 +20,7 @@ class SuppliesOpt(Resource):
 
     }
 
-    # 装饰器，定义返回数据
+    # 定义返回数据
     @marshal_with(resource_fields)
     def get(self):
         parser = reqparse.RequestParser()
@@ -26,7 +32,6 @@ class SuppliesOpt(Resource):
         if name:
             dbclone = dbclone.filter(Supplies.name.like(f"%{name}%"))
         supplies_list = dbclone.all()
-
         return supplies_list
 
     @jwt_required(refresh=True)
@@ -150,7 +155,7 @@ class UserRegistration(Resource):
 
 
 class TokenRefresh(Resource):
-    @jwt_required(refresh=True)
+    @jwt_required()
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
@@ -193,3 +198,26 @@ class RecordOpt(Resource):
             "code": 0,
             "message": "ok"
         }
+
+class DownLoad(Resource):
+    def get(self):
+        res = []
+        data = SuppliesOpt().get()
+        res = [data[0].keys()]
+        for i in data:
+            res.append(i.values())
+        def generate():
+            #	用 StringIO 在内存中写，不会生成实际文件
+            io = StringIO()  # 在 io 中写 csv
+            w = csv.writer(io)
+            for i in res:  # 对于 data 中的每一条
+                w.writerow(i)  # 传入的是一个数组 ['xxx','xxx@xxx.xxx'] csv.writer 会把它处理成逗号分隔的一行
+                # 需要注意的是传入仅一个字符串 '' 时，会被逐字符分割，所以要写成 ['xxx'] 的形式
+                yield io.getvalue()  # 返回写入的值
+                io.seek(0)  # io流的指针回到起点
+                io.truncate(0)  # 删去指针之后的部分，即清空所有写入的内容，准备下一行的写入
+
+        response = Response(generate(), mimetype='text/csv')
+
+        response.headers.set("Content-Disposition", "attachment", filename="111.csv")
+        return response

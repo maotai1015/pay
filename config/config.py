@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 ENV = os.environ.get('ENV')
 
@@ -6,7 +7,7 @@ ENV = os.environ.get('ENV')
 class BaseConfig:
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    SEND_FILE_MAX_AGE_DEFAULT = timedelta(seconds=1)
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # 查询时会显示原始SQL语句
